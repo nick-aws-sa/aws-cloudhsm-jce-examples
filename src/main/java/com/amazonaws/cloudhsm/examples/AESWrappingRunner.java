@@ -40,6 +40,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.OAEPParameterSpec;
 import javax.crypto.spec.PSource;
 
+import java.util.Date;
+
 /**
  * This sample demonstrates how to use AESWrap to wrap and unwrap a key into and out of the HSM.
  */
@@ -68,7 +70,7 @@ public class AESWrappingRunner {
 
             System.out.printf("\nOriginal key before wrapping:\n %s\n",
                                 Base64.getEncoder().encodeToString(extractableKey.getEncoded()));
-
+            
             // Example to demonstrate wrap and unwrap with "AESWrap/ECB/NoPadding"
             wrapWithNoPad(hsmWrappingKey, sunJceWrappingKey, extractableKey);
 
@@ -110,8 +112,18 @@ public class AESWrappingRunner {
         byte[] wrappedBytes = cipher.wrap(extractableKey);
 
         // Unwrap using hsm
+        Date now = new Date();
+        long msSend = now.getTime();
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         cipher.init(Cipher.UNWRAP_MODE, hsmWrappingKey);
         Key unwrappedExtractableKey = cipher.unwrap(wrappedBytes, "AES", Cipher.SECRET_KEY);
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        now = new Date();
+        long msReceived = now.getTime();
+        long latency= msReceived - msSend;
+        String latency_string = String.valueOf(latency);
+        String output = "Here is the latency: " + latency_string;
+        System.out.println(output);
 
         // Compare original key with HSM unwrapped key
         assert (Arrays.equals(extractableKey.getEncoded(), unwrappedExtractableKey.getEncoded()));
