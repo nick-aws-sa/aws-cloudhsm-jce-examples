@@ -23,10 +23,6 @@ import java.io.IOException;
 import java.security.Key;
 import java.security.Security;
 
-import com.amazonaws.xray.AWSXRay;
-import com.amazonaws.xray.entities.Segment;
-import com.amazonaws.xray.entities.Subsegment;
-
 /**
  * This sample demonstrates the different methods of authentication that can be used with the JCE.
  * Please see the official documentation for more information.
@@ -115,7 +111,6 @@ public class LoginRunner {
      */
     public static void loginWithExplicitCredentials(String user, String pass, String partition) {
         LoginManager lm = LoginManager.getInstance();
-        Subsegment subsegment = AWSXRay.beginSubsegment("loginWithExplicitCredentials");
         try {
             lm.login(partition, user, pass);
             System.out.printf("\nLogin successful!\n\n");
@@ -125,12 +120,7 @@ public class LoginRunner {
             }
 
             e.printStackTrace();
-        } catch (Exception e) {
-            subsegment.addException(e);
-            throw e;
-          } finally {
-            AWSXRay.endSubsegment();
-          }
+        }
     }
 
     /**
@@ -147,7 +137,7 @@ public class LoginRunner {
         System.setProperty("HSM_PASSWORD", pass);
 
         Key aesKey = null;
-        Subsegment subsegment = AWSXRay.beginSubsegment("loginUsingJavaProperties");
+
         try {
             aesKey = SymmetricKeys.generateAESKey(256, "Implicit Java Properties Login Key");
         } catch (Exception e) {
@@ -156,12 +146,9 @@ public class LoginRunner {
                 e.printStackTrace();
                 return;
             }
-            subsegment.addException(e);
+
             throw e;
-        } finally {
-            AWSXRay.endSubsegment();
         }
-      
 
         assert(aesKey != null);
         System.out.printf("\nLogin successful!\n\n");
@@ -179,7 +166,7 @@ public class LoginRunner {
      */
     public static void loginWithEnvVariables() throws Exception {
         Key aesKey = null;
-        Subsegment subsegment = AWSXRay.beginSubsegment("loginWithEnvVariables");
+
         try {
             aesKey = SymmetricKeys.generateAESKey(256, "Implicit Java Properties Login Key");
         } catch (Exception e) {
@@ -188,10 +175,8 @@ public class LoginRunner {
                 e.printStackTrace();
                 return;
             }
-            subsegment.addException(e);
+
             throw e;
-        } finally {
-            AWSXRay.endSubsegment();
         }
 
         System.out.printf("\nLogin successful!\n\n");
@@ -201,16 +186,10 @@ public class LoginRunner {
      * Logout will force the LoginManager to end your session.
      */
     public static void logout() {
-        Subsegment subsegment = AWSXRay.beginSubsegment("logout");
         try {
             LoginManager.getInstance().logout();
         } catch (CFM2Exception e) {
             e.printStackTrace();
-        } catch (Exception e) {
-            subsegment.addException(e);
-            throw e;
-          } finally {
-            AWSXRay.endSubsegment();
-          }
+        }
     }
 }
