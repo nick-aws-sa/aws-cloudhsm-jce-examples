@@ -24,6 +24,8 @@ import java.security.Key;
 import java.security.Security;
 
 import com.amazonaws.xray.AWSXRay;
+import com.amazonaws.xray.entities.Segment;
+import com.amazonaws.xray.entities.Subsegment;
 
 /**
  * This sample demonstrates the different methods of authentication that can be used with the JCE.
