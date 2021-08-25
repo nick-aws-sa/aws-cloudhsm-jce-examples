@@ -46,57 +46,57 @@ public class LoginRunner {
             System.out.println(ex);
             return;
         }
-        
+
         System.out.println("Getting this far -- past main try block");
 
-        if (args.length % 2 != 0) {
-            help();
-            return;
-        }
+        // if (args.length % 2 != 0) {
+        //     help();
+        //     return;
+        // }
 
-        String method = null;
-        String user = null;
-        String pass = null;
-        String partition = null;
+        // String method = null;
+        // String user = null;
+        // String pass = null;
+        // String partition = null;
 
-        for (int i = 0; i < args.length; i+=2) {
-            String arg = args[i];
-            String value = args[i+1];
-            switch (arg) {
-                case "--method":
-                    method = value;
-                    break;
-                case "--user":
-                    user = value;
-                    break;
-                case "--password":
-                    pass = value;
-                    break;
-                case "--partition":
-                    partition = value;
-                    break;
-            }
-        }
+        // for (int i = 0; i < args.length; i+=2) {
+        //     String arg = args[i];
+        //     String value = args[i+1];
+        //     switch (arg) {
+        //         case "--method":
+        //             method = value;
+        //             break;
+        //         case "--user":
+        //             user = value;
+        //             break;
+        //         case "--password":
+        //             pass = value;
+        //             break;
+        //         case "--partition":
+        //             partition = value;
+        //             break;
+        //     }
+        // }
 
-        if (null == method) {
-            help();
-            return;
-        }
+        // if (null == method) {
+        //     help();
+        //     return;
+        // }
 
-        if (method.equals("explicit") || method.equals("system-properties")) {
-            if (null == user || null == pass || null == partition) {
-                help();
-                return;
-            }
-        }
+        // if (method.equals("explicit") || method.equals("system-properties")) {
+        //     if (null == user || null == pass || null == partition) {
+        //         help();
+        //         return;
+        //     }
+        // }
 
-        if (method.equals("explicit")) {
-            loginWithExplicitCredentials(user, pass, partition);
-        } else if (method.equals("system-properties")) {
-            loginUsingJavaProperties(user, pass, partition);
-        } else if (method.equals("environment")) {
-            loginWithEnvVariables();
-        }
+        // if (method.equals("explicit")) {
+        //     loginWithExplicitCredentials(user, pass, partition);
+        // } else if (method.equals("system-properties")) {
+        //     loginUsingJavaProperties(user, pass, partition);
+        // } else if (method.equals("environment")) {
+        loginWithEnvVariables();
+        // }
 
         logout();
     }
