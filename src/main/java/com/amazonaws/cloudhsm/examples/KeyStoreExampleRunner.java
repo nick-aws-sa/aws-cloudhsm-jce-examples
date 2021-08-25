@@ -76,6 +76,14 @@ public class KeyStoreExampleRunner {
         for(Enumeration<String> entry = keyStore.aliases(); entry.hasMoreElements();) {
             System.out.println(entry.nextElement());
         }
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        long finish = System.currentTimeMillis();
+        long finish2 = System.nanoTime();
+        now = new Date();
+        long msReceived = now.getTime();
+        long latency= msReceived - msSend;
+        String latency_string = String.valueOf(latency);
+        String output = "Here is the latency: " + latency_string;
         System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
