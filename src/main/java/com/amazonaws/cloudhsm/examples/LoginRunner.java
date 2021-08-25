@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.security.Key;
 import java.security.Security;
 import java.io.*;
-
+import java.util.*;
 /**
  * This sample demonstrates the different methods of authentication that can be used with the JCE.
  * Please see the official documentation for more information.
@@ -168,6 +168,10 @@ public class LoginRunner {
      * will be done automatically.
      */
     public static void loginWithEnvVariables() throws Exception {
+        Date now = new Date();
+        long msSend = now.getTime();
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        
         Key aesKey = null;
 
         try {
@@ -181,6 +185,27 @@ public class LoginRunner {
 
             throw e;
         }
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        now = new Date();
+        long msReceived = now.getTime();
+        long latency= msReceived - msSend;
+        String latency_string = String.valueOf(latency);
+        String output = "Here is the latency: " + latency_string;
+        System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        System.out.println("output");
+        System.out.println(output);
+        System.out.println("latency");
+        System.out.println(latency);
+        System.out.println("msSend");
+        System.out.println(msSend);
+        System.out.println("msReceived");
+        System.out.println(msReceived);
+        System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+
 
         System.out.printf("\nLogin successful!\n\n");
     }
