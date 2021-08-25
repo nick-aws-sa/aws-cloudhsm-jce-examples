@@ -104,6 +104,8 @@ public class LoginRunner {
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         loginUsingJavaProperties("nsnaws", "Firepolo2!", "PARTITION_1");
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        long finish = System.currentTimeMillis();
+        long finish2 = System.nanoTime();
         now = new Date();
         long msReceived = now.getTime();
         long latency= msReceived - msSend;
@@ -120,11 +122,9 @@ public class LoginRunner {
         System.out.println(msSend);
         System.out.println("msReceived");
         System.out.println(msReceived);
-        long finish = System.currentTimeMillis();
         long timeElapsed = finish - start;
-        System.out.println("timeElapsed");
+        System.out.println("timeElapsed - ms");
         System.out.println(timeElapsed);
-        long finish2 = System.nanoTime();
         long timeElapsed2 = finish2 - start2;
         System.out.println("timeElapsednano");
         System.out.println(timeElapsed2);

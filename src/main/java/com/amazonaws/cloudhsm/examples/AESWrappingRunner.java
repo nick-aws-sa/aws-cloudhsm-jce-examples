@@ -40,8 +40,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.OAEPParameterSpec;
 import javax.crypto.spec.PSource;
 
-import java.util.Date;
-
+import java.util.*;
+import java.lang.System;
 /**
  * This sample demonstrates how to use AESWrap to wrap and unwrap a key into and out of the HSM.
  */
@@ -157,7 +157,12 @@ public class AESWrappingRunner {
      */
     private static void wrapWithPkcs5Pad(Key hsmWrappingKey, Key extractableKey)
             throws InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, IllegalBlockSizeException {
-
+                Date now = new Date();
+                long msSend = now.getTime();
+                long start = System.currentTimeMillis();
+                long start2 = System.nanoTime();
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+               
         Cipher cipher = Cipher.getInstance("AESWrap/ECB/PKCS5Padding", "Cavium");
         cipher.init(Cipher.WRAP_MODE, hsmWrappingKey);
 
@@ -172,7 +177,37 @@ public class AESWrappingRunner {
         assert (Arrays.equals(extractableKey.getEncoded(), unwrappedExtractableKey.getEncoded()));
         System.out.printf("\nVerified key when using the HSM to wrap and unwrap with AESWrap/ECB/PKCS5Padding:\n %s\n",
                             Base64.getEncoder().encodeToString(unwrappedExtractableKey.getEncoded()));
-    }
+    
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    long finish = System.currentTimeMillis();
+    long finish2 = System.nanoTime();
+    now = new Date();
+    long msReceived = now.getTime();
+    long latency= msReceived - msSend;
+    String latency_string = String.valueOf(latency);
+    String output = "Here is the latency: " + latency_string;
+    System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+    System.out.println("output");
+    System.out.println(output);
+    System.out.println("latency");
+    System.out.println(latency);
+    System.out.println("msSend");
+    System.out.println(msSend);
+    System.out.println("msReceived");
+    System.out.println(msReceived);
+    long timeElapsed = finish - start;
+    System.out.println("timeElapsed - ms");
+    System.out.println(timeElapsed);
+    long timeElapsed2 = finish2 - start2;
+    System.out.println("timeElapsednano");
+    System.out.println(timeElapsed2);
+    System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+
+                        }
 
     /**
      * This method demonstrates "AESWrap/ECB/ZeroPadding" by wrapping and unwrapping a key using HSM.

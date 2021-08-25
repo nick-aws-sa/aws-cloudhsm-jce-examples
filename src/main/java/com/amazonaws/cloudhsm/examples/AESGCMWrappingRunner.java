@@ -42,6 +42,9 @@ import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.OAEPParameterSpec;
 import javax.crypto.spec.PSource;
 
+import java.util.*;
+import java.lang.System;
+
 /**
  * This sample demonstrates how to use AES GCM to wrap and unwrap a key into and out of the HSM.
  */
@@ -94,7 +97,12 @@ public class AESGCMWrappingRunner {
     private static void wrap(Key wrappingKey, Key extractableKey)
             throws InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException,
             IllegalBlockSizeException, InvalidAlgorithmParameterException {
-
+                Date now = new Date();
+                long msSend = now.getTime();
+                long start = System.currentTimeMillis();
+                long start2 = System.nanoTime();
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                
         byte[] iv = new byte[12];
         SecureRandom r = SecureRandom.getInstance("X9-17-RNG");;
         r.nextBytes(iv);
@@ -112,6 +120,36 @@ public class AESGCMWrappingRunner {
         // Compare the two keys.
         assert (Arrays.equals(extractableKey.getEncoded(), unwrappedExtractableKey.getEncoded()));
         System.out.printf("\nVerified key when using the HSM to wrap and unwrap: %s\n", Base64.getEncoder().encodeToString(unwrappedExtractableKey.getEncoded()));
+    
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    long finish = System.currentTimeMillis();
+    long finish2 = System.nanoTime();
+    now = new Date();
+    long msReceived = now.getTime();
+    long latency= msReceived - msSend;
+    String latency_string = String.valueOf(latency);
+    String output = "Here is the latency: " + latency_string;
+    System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+    System.out.println("output");
+    System.out.println(output);
+    System.out.println("latency");
+    System.out.println(latency);
+    System.out.println("msSend");
+    System.out.println(msSend);
+    System.out.println("msReceived");
+    System.out.println(msReceived);
+    long timeElapsed = finish - start;
+    System.out.println("timeElapsed - ms");
+    System.out.println(timeElapsed);
+    long timeElapsed2 = finish2 - start2;
+    System.out.println("timeElapsednano");
+    System.out.println(timeElapsed2);
+    System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+
     }
 
     /**
