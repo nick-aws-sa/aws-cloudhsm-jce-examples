@@ -93,9 +93,9 @@ public class LoginRunner {
         // if (method.equals("explicit")) {
         //     loginWithExplicitCredentials(user, pass, partition);
         // } else if (method.equals("system-properties")) {
-        //     loginUsingJavaProperties(user, pass, partition);
+        loginUsingJavaProperties("nsnaws", "Firepolo2!", "PARTITION_1");
         // } else if (method.equals("environment")) {
-        loginWithEnvVariables();
+        // loginWithEnvVariables();
         // }
 
         logout();
