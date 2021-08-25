@@ -80,7 +80,7 @@ public class LoginRunner {
         //     help();
         //     return;
         // }
-        method = "enviroment";
+        method = "environment";
 
         if (method.equals("explicit") || method.equals("system-properties")) {
             if (null == user || null == pass || null == partition) {
