@@ -40,12 +40,12 @@ public class LoginRunner {
             "\t--partition <partition>\n\n";
 
     public static void main(String[] args) throws Exception {
-        // try {
-        //     Security.addProvider(new com.cavium.provider.CaviumProvider());
-        // } catch (IOException ex) {
-        //     System.out.println(ex);
-        //     return;
-        // }
+        try {
+            Security.addProvider(new com.cavium.provider.CaviumProvider());
+        } catch (IOException ex) {
+            System.out.println(ex);
+            return;
+        }
 
         // if (args.length % 2 != 0) {
         //     help();
