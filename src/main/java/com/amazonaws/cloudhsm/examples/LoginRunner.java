@@ -75,11 +75,12 @@ public class LoginRunner {
             }
         }
 
-        if (null == method) {
-            help();
-            return;
-        }
-
+        // if (null == method) {
+        //     help();
+        //     return;
+        // }
+        method = "enviroment";
+        
         if (method.equals("explicit") || method.equals("system-properties")) {
             if (null == user || null == pass || null == partition) {
                 help();
