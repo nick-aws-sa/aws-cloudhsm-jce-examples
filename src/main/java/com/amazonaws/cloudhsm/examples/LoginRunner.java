@@ -24,6 +24,8 @@ import java.security.Key;
 import java.security.Security;
 import java.io.*;
 import java.util.*;
+import java.lang.System;
+
 /**
  * This sample demonstrates the different methods of authentication that can be used with the JCE.
  * Please see the official documentation for more information.
@@ -170,6 +172,8 @@ public class LoginRunner {
     public static void loginWithEnvVariables() throws Exception {
         Date now = new Date();
         long msSend = now.getTime();
+        long start = System.currentTimeMillis();
+        long start2 = System.nanoTime();
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
         Key aesKey = null;
@@ -202,6 +206,14 @@ public class LoginRunner {
         System.out.println(msSend);
         System.out.println("msReceived");
         System.out.println(msReceived);
+        long finish = System.currentTimeMillis();
+        long timeElapsed = finish - start;
+        System.out.println("timeElapsed");
+        System.out.println(timeElapsed);
+        long finish2 = System.nanoTime();
+        long timeElapsed2 = finish2 - start2;
+        System.out.println("timeElapsednano");
+        System.out.println(timeElapsed2);
         System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
