@@ -27,6 +27,8 @@ import java.security.NoSuchProviderException;
 import java.security.Security;
 import java.util.Enumeration;
 import javax.crypto.KeyGenerator;
+import java.util.*;
+import java.lang.System;
 
 /**
  * KeyStoreExampleRunner demonstrates how to enumerate through the KeyStore, and how to find a specific key by label.
@@ -41,6 +43,12 @@ public class KeyStoreExampleRunner {
      * @throws Exception
      */
     public static void main(String[] argv) throws Exception {
+        Date now = new Date();
+        long msSend = now.getTime();
+        long start = System.currentTimeMillis();
+        long start2 = System.nanoTime();
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        
         Security.addProvider(new com.cavium.provider.CaviumProvider());
 
         KeyStore keyStore = KeyStore.getInstance("Cavium");
@@ -68,6 +76,27 @@ public class KeyStoreExampleRunner {
         for(Enumeration<String> entry = keyStore.aliases(); entry.hasMoreElements();) {
             System.out.println(entry.nextElement());
         }
+        System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        System.out.println("output");
+        System.out.println(output);
+        System.out.println("latency");
+        System.out.println(latency);
+        System.out.println("msSend");
+        System.out.println(msSend);
+        System.out.println("msReceived");
+        System.out.println(msReceived);
+        long timeElapsed = finish - start;
+        System.out.println("timeElapsed - ms");
+        System.out.println(timeElapsed);
+        long timeElapsed2 = finish2 - start2;
+        System.out.println("timeElapsednano");
+        System.out.println(timeElapsed2);
+        System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+
     }
 
     /**

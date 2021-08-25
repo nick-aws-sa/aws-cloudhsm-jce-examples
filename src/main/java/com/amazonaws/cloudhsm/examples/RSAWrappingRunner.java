@@ -42,6 +42,10 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.OAEPParameterSpec;
 import javax.crypto.spec.PSource;
 
+
+import java.util.*;
+import java.lang.System;
+
 /**
  * This sample demonstrates how to use RSA to wrap and unwrap a key into and out of the HSM.
  */
@@ -126,7 +130,12 @@ public class RSAWrappingRunner {
      */
     private static void rsaOAEPWrap(Key wrappingKey, Key unwrappingKey, Key extractableKey)
             throws InvalidAlgorithmParameterException, InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, IllegalBlockSizeException {
-
+                Date now = new Date();
+                long msSend = now.getTime();
+                long start = System.currentTimeMillis();
+                long start2 = System.nanoTime();
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+               
         OAEPParameterSpec spec = new OAEPParameterSpec("SHA-256", "MGF1", MGF1ParameterSpec.SHA256, PSource.PSpecified.DEFAULT);
         Cipher cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256ANDMGF1Padding", "Cavium");
         cipher.init(Cipher.WRAP_MODE, wrappingKey, spec);
@@ -143,6 +152,36 @@ public class RSAWrappingRunner {
         // Notice that extractable keys can be exported from the HSM using the .getEncoded() method.
         assert (Arrays.equals(extractableKey.getEncoded(), unwrappedExtractableKey.getEncoded()));
         System.out.printf("\nVerified key when using OAEP in the HSM and SunJCE to wrap and unwrap: %s\n", Base64.getEncoder().encodeToString(unwrappedExtractableKey.getEncoded()));
+    
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    long finish = System.currentTimeMillis();
+    long finish2 = System.nanoTime();
+    now = new Date();
+    long msReceived = now.getTime();
+    long latency= msReceived - msSend;
+    String latency_string = String.valueOf(latency);
+    String output = "Here is the latency: " + latency_string;
+    System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+    System.out.println("output");
+    System.out.println(output);
+    System.out.println("latency");
+    System.out.println(latency);
+    System.out.println("msSend");
+    System.out.println(msSend);
+    System.out.println("msReceived");
+    System.out.println(msReceived);
+    long timeElapsed = finish - start;
+    System.out.println("timeElapsed - ms");
+    System.out.println(timeElapsed);
+    long timeElapsed2 = finish2 - start2;
+    System.out.println("timeElapsednano");
+    System.out.println(timeElapsed2);
+    System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+
     }
 
     /**
