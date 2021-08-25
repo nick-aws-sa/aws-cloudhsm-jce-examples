@@ -95,7 +95,43 @@ public class LoginRunner {
         // if (method.equals("explicit")) {
         //     loginWithExplicitCredentials(user, pass, partition);
         // } else if (method.equals("system-properties")) {
+
+
+        Date now = new Date();
+        long msSend = now.getTime();
+        long start = System.currentTimeMillis();
+        long start2 = System.nanoTime();
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         loginUsingJavaProperties("nsnaws", "Firepolo2!", "PARTITION_1");
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        now = new Date();
+        long msReceived = now.getTime();
+        long latency= msReceived - msSend;
+        String latency_string = String.valueOf(latency);
+        String output = "Here is the latency: " + latency_string;
+        System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        System.out.println("output");
+        System.out.println(output);
+        System.out.println("latency");
+        System.out.println(latency);
+        System.out.println("msSend");
+        System.out.println(msSend);
+        System.out.println("msReceived");
+        System.out.println(msReceived);
+        long finish = System.currentTimeMillis();
+        long timeElapsed = finish - start;
+        System.out.println("timeElapsed");
+        System.out.println(timeElapsed);
+        long finish2 = System.nanoTime();
+        long timeElapsed2 = finish2 - start2;
+        System.out.println("timeElapsednano");
+        System.out.println(timeElapsed2);
+        System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+
         // } else if (method.equals("environment")) {
         // loginWithEnvVariables();
         // }
@@ -170,11 +206,7 @@ public class LoginRunner {
      * will be done automatically.
      */
     public static void loginWithEnvVariables() throws Exception {
-        Date now = new Date();
-        long msSend = now.getTime();
-        long start = System.currentTimeMillis();
-        long start2 = System.nanoTime();
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        
         
         Key aesKey = null;
 
@@ -189,35 +221,7 @@ public class LoginRunner {
 
             throw e;
         }
-        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        now = new Date();
-        long msReceived = now.getTime();
-        long latency= msReceived - msSend;
-        String latency_string = String.valueOf(latency);
-        String output = "Here is the latency: " + latency_string;
-        System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-        System.out.println("output");
-        System.out.println(output);
-        System.out.println("latency");
-        System.out.println(latency);
-        System.out.println("msSend");
-        System.out.println(msSend);
-        System.out.println("msReceived");
-        System.out.println(msReceived);
-        long finish = System.currentTimeMillis();
-        long timeElapsed = finish - start;
-        System.out.println("timeElapsed");
-        System.out.println(timeElapsed);
-        long finish2 = System.nanoTime();
-        long timeElapsed2 = finish2 - start2;
-        System.out.println("timeElapsednano");
-        System.out.println(timeElapsed2);
-        System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        System.out.printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-
+        
 
         System.out.printf("\nLogin successful!\n\n");
     }
