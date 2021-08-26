@@ -31,6 +31,8 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
+import java.util.*;
+import java.lang.System;
 
 /**
  * Demonstrate how to encrypt and decrypt data using AES and DES keys
@@ -86,20 +88,38 @@ public class CBCEncryptDecryptRunner {
 
         String plainText = "This is a sample plain text message!";
         IvParameterSpec ivSpec = new IvParameterSpec(iv);
-
+        
+        System.out.println("0000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+        long estart = System.currentTimeMillis();
         // Encrypt the string and display the base64 cipher text
         Cipher encryptCipher = Cipher.getInstance(transformation, "Cavium");
         encryptCipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
         byte[] cipherText = encryptCipher.doFinal(plainText.getBytes("UTF-8"));
 
-        System.out.println("Base64 cipher text = " + Base64.getEncoder().encodeToString(cipherText));
 
+        long efinish = System.currentTimeMillis();
+        System.out.println("Base64 cipher text = " + Base64.getEncoder().encodeToString(cipherText));
+        long etimeElapsed = efinish - estart;
+        System.out.println("result in ms:");
+        System.out.println(etimeElapsed);
+        System.out.println("0000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+
+        
+        long dstart = System.currentTimeMillis();
         // Decrypt the cipher text and display the original string
         Cipher decryptCipher = Cipher.getInstance(transformation, "Cavium");
         decryptCipher.init(Cipher.DECRYPT_MODE, key, ivSpec);
         byte[] decryptedText = decryptCipher.doFinal(cipherText);
 
+        long dfinish = System.currentTimeMillis();
+
         System.out.println("Decrypted text = " + new String(decryptedText, "UTF-8"));
+
+        long dtimeElapsed = dfinish - dstart;
+        System.out.println("result in ms:");
+        System.out.println(dtimeElapsed);
+
+        System.out.println("0000000000000000000000000000000000000000000000000000000000000000000000000000000000");
     }
 
     /**
