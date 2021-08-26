@@ -116,7 +116,11 @@ public class KeyStoreExampleRunner {
         int keySizeBits = 256;
         boolean isExtractable = false;
         boolean isPersistent = false;
-
+        Date now = new Date();
+        long msSend = now.getTime();
+        long start = System.currentTimeMillis();
+        long start2 = System.nanoTime();
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         try {
             KeyGenerator keyGen = KeyGenerator.getInstance("AES","Cavium");
             CaviumAESKeyGenParameterSpec aesSpec = new CaviumAESKeyGenParameterSpec(keySizeBits, keyLabel, isExtractable, isPersistent);
@@ -127,5 +131,33 @@ public class KeyStoreExampleRunner {
             ex.printStackTrace();
             return null;
         }
+                // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                long finish = System.currentTimeMillis();
+                long finish2 = System.nanoTime();
+                now = new Date();
+                long msReceived = now.getTime();
+                long latency= msReceived - msSend;
+                String latency_string = String.valueOf(latency);
+                String output = "Here is the latency: " + latency_string;
+                System.out.printf("\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+                System.out.printf("\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+                System.out.printf("\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+                System.out.println("output");
+                System.out.println(output);
+                System.out.println("latency");
+                System.out.println(latency);
+                System.out.println("msSend");
+                System.out.println(msSend);
+                System.out.println("msReceived");
+                System.out.println(msReceived);
+                long timeElapsed = finish - start;
+                System.out.println("timeElapsed - ms");
+                System.out.println(timeElapsed);
+                long timeElapsed2 = finish2 - start2;
+                System.out.println("timeElapsednano");
+                System.out.println(timeElapsed2);
+                System.out.printf("\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+                System.out.printf("\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+                System.out.printf("\nxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
     }
 }
