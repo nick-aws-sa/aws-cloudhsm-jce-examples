@@ -52,7 +52,7 @@ public class CBCEncryptDecryptRunner {
         }
         end_timer(start0);
 
-        System.out.println("Using AES to test encrypt/decrypt in CBC mode");
+        // System.out.println("Using AES to test encrypt/decrypt in CBC mode");
         String transformation = "AES/CBC/PKCS5Padding";
         long start = start_timer("SymmetricKeys.generateAESKey");
         Key key = SymmetricKeys.generateAESKey(256, "AESCBC Test");
@@ -62,7 +62,7 @@ public class CBCEncryptDecryptRunner {
         end_timer(start1);
         encryptDecrypt(transformation, key, iv);
 
-        System.out.println("Using DES to test encrypt/decrypt in CBC mode");
+        // System.out.println("Using DES to test encrypt/decrypt in CBC mode");
         transformation = "DESede/CBC/PKCS5Padding";
         key = SymmetricKeys.generateDESKey("DESCBC Test");
         iv = generateFipsCompliantIV(8);
@@ -106,7 +106,7 @@ public class CBCEncryptDecryptRunner {
         byte[] cipherText = encryptCipher.doFinal(plainText.getBytes("UTF-8"));
         end_timer(start);
 
-        System.out.println("Base64 cipher text = " + Base64.getEncoder().encodeToString(cipherText));
+        // System.out.println("Base64 cipher text = " + Base64.getEncoder().encodeToString(cipherText));
 
 
         
@@ -118,7 +118,7 @@ public class CBCEncryptDecryptRunner {
         end_timer(start1);
 
 
-        System.out.println("Decrypted text = " + new String(decryptedText, "UTF-8"));
+        // System.out.println("Decrypted text = " + new String(decryptedText, "UTF-8"));
     }
 
     /**
@@ -145,9 +145,9 @@ public class CBCEncryptDecryptRunner {
     // Nick's Output
 
     private static long start_timer(String operation) {
-        System.out.println("-------------------- Operation:\t" + operation);
+        System.out.println("---------------- Operation:\t" + operation);
         long start = System.currentTimeMillis();
-        System.out.println("-------------------- Start At:\t" + String.valueOf(start) + " ms\n");
+        System.out.println("-------------------- Start At:\t" + String.valueOf(start) + " ms");
         return start;
     }
 
@@ -155,7 +155,7 @@ public class CBCEncryptDecryptRunner {
         long end = System.currentTimeMillis();
         System.out.println("-------------------- End At:\t" + String.valueOf(end) + " ms");
         long totaltime = end - start;
-        System.out.println("-------------------- TOTAL TIME:\t" + String.valueOf(totaltime) + " ms\n");
+        System.out.println("-------------------- TOTAL TIME:\t" + String.valueOf(totaltime) + " ms\n\n");
     }
 
 }
