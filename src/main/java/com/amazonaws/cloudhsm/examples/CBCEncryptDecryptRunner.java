@@ -34,6 +34,8 @@ import javax.crypto.spec.IvParameterSpec;
 import java.util.*;
 import java.lang.System;
 
+import java.lang.String;
+
 /**
  * Demonstrate how to encrypt and decrypt data using AES and DES keys
  * with CBC mode. To generate the IV, FIPS compliant AES-CTR-DRBG is used.
@@ -41,17 +43,23 @@ import java.lang.System;
 public class CBCEncryptDecryptRunner {
 
     public static void main(final String[] args) throws Exception {
+        long start0 = start_timer("Security.addProvider(new com.cavium.provider.CaviumProvider());");
         try {
             Security.addProvider(new com.cavium.provider.CaviumProvider());
         } catch (IOException ex) {
             System.out.println(ex);
             return;
         }
+        end_timer(start0);
 
         System.out.println("Using AES to test encrypt/decrypt in CBC mode");
         String transformation = "AES/CBC/PKCS5Padding";
+        long start = start_timer("SymmetricKeys.generateAESKey");
         Key key = SymmetricKeys.generateAESKey(256, "AESCBC Test");
+        end_timer(start);
+        long start1 = start_timer("enerateFipsCompliantIV(16)");
         byte[] iv = generateFipsCompliantIV(16);
+        end_timer(start1);
         encryptDecrypt(transformation, key, iv);
 
         System.out.println("Using DES to test encrypt/decrypt in CBC mode");
@@ -89,37 +97,28 @@ public class CBCEncryptDecryptRunner {
         String plainText = "This is a sample plain text message!";
         IvParameterSpec ivSpec = new IvParameterSpec(iv);
         
-        System.out.println("0000000000000000000000000000000000000000000000000000000000000000000000000000000000");
-        long estart = System.currentTimeMillis();
+
+
         // Encrypt the string and display the base64 cipher text
+        long start = start_timer("encryptCipher");
         Cipher encryptCipher = Cipher.getInstance(transformation, "Cavium");
         encryptCipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
         byte[] cipherText = encryptCipher.doFinal(plainText.getBytes("UTF-8"));
+        end_timer(start);
 
-
-        long efinish = System.currentTimeMillis();
         System.out.println("Base64 cipher text = " + Base64.getEncoder().encodeToString(cipherText));
-        long etimeElapsed = efinish - estart;
-        System.out.println("result in ms:");
-        System.out.println(etimeElapsed);
-        System.out.println("0000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+
 
         
-        long dstart = System.currentTimeMillis();
         // Decrypt the cipher text and display the original string
+        long start1 = start_timer("decryptCipher");
         Cipher decryptCipher = Cipher.getInstance(transformation, "Cavium");
         decryptCipher.init(Cipher.DECRYPT_MODE, key, ivSpec);
         byte[] decryptedText = decryptCipher.doFinal(cipherText);
+        end_timer(start1);
 
-        long dfinish = System.currentTimeMillis();
 
         System.out.println("Decrypted text = " + new String(decryptedText, "UTF-8"));
-
-        long dtimeElapsed = dfinish - dstart;
-        System.out.println("result in ms:");
-        System.out.println(dtimeElapsed);
-
-        System.out.println("0000000000000000000000000000000000000000000000000000000000000000000000000000000000");
     }
 
     /**
@@ -140,4 +139,23 @@ public class CBCEncryptDecryptRunner {
         sr.nextBytes(iv);
         return iv;
     }
+
+    // --------------------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------------------------------
+    // Nick's Output
+
+    private static long start_timer(String operation) {
+        System.out.println("-------------------- Operation:\t" + operation);
+        long start = System.currentTimeMillis();
+        System.out.println("-------------------- Start At:\t" + String.valueOf(start) + " ms\n");
+        return start;
+    }
+
+    private static void end_timer(long start) {
+        long end = System.currentTimeMillis();
+        System.out.println("-------------------- End At:\t" + String.valueOf(end) + " ms");
+        long totaltime = end - start;
+        System.out.println("-------------------- TOTAL TIME:\t" + String.valueOf(totaltime) + " ms\n");
+    }
+
 }
