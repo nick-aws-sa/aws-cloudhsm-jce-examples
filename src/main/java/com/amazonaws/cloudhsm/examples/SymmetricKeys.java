@@ -47,22 +47,20 @@ public class SymmetricKeys {
         boolean isExtractable = false;
         boolean isPersistent = false;
 
-        long start0 = start_timer("KeyGenerator.getInstance");
+        long start0 = start_timer("KeyGenerator.getInstance - Cavium");
         KeyGenerator keyGen = KeyGenerator.getInstance("AES", "Cavium");
         end_timer(start0);
         
         
 
-        long start1 = start_timer("CaviumAESKeyGenParameterSpec aesSpec = new CaviumAESKeyGenParameterSpec");
+        long start1 = start_timer("Crate Cavium AES Spec");
         CaviumAESKeyGenParameterSpec aesSpec = new CaviumAESKeyGenParameterSpec(keySizeInBits, keyLabel, isExtractable, isPersistent);
+
+        keyGen.init(aesSpec);
         end_timer(start1);
         
-        long start2 = start_timer("keyGen.init(aesSpec);");
-        keyGen.init(aesSpec);
-        end_timer(start2);
         
-        
-        long start3 = start_timer("SecretKey aesKey = keyGen.generateKey();");
+        long start3 = start_timer("Generate AES Key ");
         SecretKey aesKey = keyGen.generateKey();
         end_timer(start3);
 
