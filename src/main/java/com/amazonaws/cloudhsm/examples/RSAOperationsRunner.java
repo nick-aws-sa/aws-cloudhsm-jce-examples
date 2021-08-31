@@ -32,7 +32,9 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-
+import java.util.*;
+import java.lang.System;
+import java.lang.String;
 /**
  * Demonstrate basic RSA operations.
  */
@@ -136,7 +138,9 @@ public class RSAOperationsRunner {
 
     public static void main(final String[] args) throws Exception {
         try {
+            long start = start_timer("CAVIUM PROVIDER");
             Security.addProvider(new com.cavium.provider.CaviumProvider());
+            end_timer(start);
         } catch (IOException ex) {
             System.out.println(ex);
             return;
@@ -145,25 +149,52 @@ public class RSAOperationsRunner {
         String plainText = "This is a sample Plain Text Message!";
         String transformation = "RSA/ECB/OAEPPadding";
 
+        long start1 = start_timer("Gernate RSA Key Pair");
         KeyPair kp = new AsymmetricKeys().generateRSAKeyPair(2048, "rsa test");
+        end_timer(start1);
 
-        System.out.println("Performing RSA Encryption Operation");
+        long start2 = start_timer("Performing RSA Encryption Operation");
         byte[] cipherText = null;
         cipherText = encrypt(transformation, kp.getPublic(), plainText.getBytes("UTF-8"));
+        end_timer(start2);
 
-        System.out.println("Encrypted plaintext = " + Base64.getEncoder().encodeToString(cipherText));
+        // System.out.println("Encrypted plaintext = " + Base64.getEncoder().encodeToString(cipherText));
 
+        long start3 = start_timer("Performing RSA Decryption Operation");
         byte[] decryptedText = decrypt(transformation, kp.getPrivate(), cipherText);
-        System.out.println("Decrypted text = " + new String(decryptedText, "UTF-8"));
+        end_timer(start3);
+        // System.out.println("Decrypted text = " + new String(decryptedText, "UTF-8"));
 
         String signingAlgorithm = "SHA512withRSA/PSS";
+        long start4 = start_timer("Sign a message using the passed signing algorithm. SHA512withRSA/PSS");
         byte[] signature = sign(plainText.getBytes("UTF-8"), kp.getPrivate(), signingAlgorithm);
-        System.out.println("Plaintext signature = " + Base64.getEncoder().encodeToString(signature));
+        // System.out.println("Plaintext signature = " + Base64.getEncoder().encodeToString(signature));
+        end_timer(start4);
 
+        long start5 = start_timer("Verify RSA Signature");
         if (verify(plainText.getBytes("UTF-8"), signature, kp.getPublic(), signingAlgorithm)) {
             System.out.println("Signature verified");
         } else {
             System.out.println("Signature is invalid!");
         }
+        end_timer(start5);
+    }
+
+    // --------------------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------------------------------
+    // Nick's Output
+
+    private static long start_timer(String operation) {
+        System.out.println("---------------- Operation:\t" + operation);
+        long start = System.currentTimeMillis();
+        System.out.println("-------------------- Start At:\t" + String.valueOf(start) + " ms");
+        return start;
+    }
+
+    private static void end_timer(long start) {
+        long end = System.currentTimeMillis();
+        System.out.println("-------------------- End At:\t" + String.valueOf(end) + " ms");
+        long totaltime = end - start;
+        System.out.println("-------------------- TOTAL TIME:\t" + String.valueOf(totaltime) + " ms\n\n");
     }
 }

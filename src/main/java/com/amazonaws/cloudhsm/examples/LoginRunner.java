@@ -153,9 +153,9 @@ public class LoginRunner {
         Key aesKey = null;
 
         try {
-            long start = start_timer("LOGIN PROCESS Generate AES Key");
+            // long start = start_timer("LOGIN PROCESS Generate AES Key");
             aesKey = SymmetricKeys.generateAESKey(256, "Implicit Java Properties Login Key");
-            end_timer(start);
+            // end_timer(start);
         } catch (Exception e) {
             if (CFM2Exception.isAuthenticationFailure(e)) {
                 System.out.printf("\nDetected invalid credentials\n\n");
