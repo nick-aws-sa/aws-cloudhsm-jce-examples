@@ -26,6 +26,10 @@ import java.security.NoSuchProviderException;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 
+import java.lang.String;
+import java.util.*;
+import java.lang.System;
+
 /**
  * Symmetric key generation examples.
  */
@@ -43,12 +47,24 @@ public class SymmetricKeys {
         boolean isExtractable = false;
         boolean isPersistent = false;
 
-
+        long start0 = start_timer("KeyGenerator.getInstance");
         KeyGenerator keyGen = KeyGenerator.getInstance("AES", "Cavium");
+        end_timer(start0);
+        
+        
 
+        long start1 = start_timer("CaviumAESKeyGenParameterSpec aesSpec = new CaviumAESKeyGenParameterSpec");
         CaviumAESKeyGenParameterSpec aesSpec = new CaviumAESKeyGenParameterSpec(keySizeInBits, keyLabel, isExtractable, isPersistent);
+        end_timer(start1);
+        
+        long start2 = start_timer("keyGen.init(aesSpec);");
         keyGen.init(aesSpec);
+        end_timer(start2);
+        
+        
+        long start3 = start_timer("SecretKey aesKey = keyGen.generateKey();");
         SecretKey aesKey = keyGen.generateKey();
+        end_timer(start3);
 
         return aesKey;
     }
@@ -96,5 +112,24 @@ public class SymmetricKeys {
         keyGen.init(desSpec);
         SecretKey des3Key = keyGen.generateKey();
         return des3Key;
+    }
+
+
+    // --------------------------------------------------------------------------------------------------------
+    // --------------------------------------------------------------------------------------------------------
+    // Nick's Output
+
+    private static long start_timer(String operation) {
+        System.out.println("---------------- Operation:\t" + operation);
+        long start = System.currentTimeMillis();
+        System.out.println("-------------------- Start At:\t" + String.valueOf(start) + " ms");
+        return start;
+    }
+
+    private static void end_timer(long start) {
+        long end = System.currentTimeMillis();
+        System.out.println("-------------------- End At:\t" + String.valueOf(end) + " ms");
+        long totaltime = end - start;
+        System.out.println("-------------------- TOTAL TIME:\t" + String.valueOf(totaltime) + " ms\n\n");
     }
 }
