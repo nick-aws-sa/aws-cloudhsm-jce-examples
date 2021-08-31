@@ -43,7 +43,7 @@ import java.lang.String;
 public class CBCEncryptDecryptRunner {
 
     public static void main(final String[] args) throws Exception {
-        long start0 = start_timer("Security.addProvider(new com.cavium.provider.CaviumProvider());");
+        long start0 = start_timer("Create Cavium Provider");
         try {
             Security.addProvider(new com.cavium.provider.CaviumProvider());
         } catch (IOException ex) {
@@ -54,12 +54,10 @@ public class CBCEncryptDecryptRunner {
 
         // System.out.println("Using AES to test encrypt/decrypt in CBC mode");
         String transformation = "AES/CBC/PKCS5Padding";
-        long start = start_timer("SymmetricKeys.generateAESKey");
+        long start = start_timer("Generate AES Key");
         Key key = SymmetricKeys.generateAESKey(256, "AESCBC Test");
         end_timer(start);
-        long start1 = start_timer("enerateFipsCompliantIV(16)");
         byte[] iv = generateFipsCompliantIV(16);
-        end_timer(start1);
         encryptDecrypt(transformation, key, iv);
 
         // System.out.println("Using DES to test encrypt/decrypt in CBC mode");
@@ -100,7 +98,7 @@ public class CBCEncryptDecryptRunner {
 
 
         // Encrypt the string and display the base64 cipher text
-        long start = start_timer("encryptCipher");
+        long start = start_timer("AES CBC Cavium Encrypt Cipher");
         Cipher encryptCipher = Cipher.getInstance(transformation, "Cavium");
         encryptCipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
         byte[] cipherText = encryptCipher.doFinal(plainText.getBytes("UTF-8"));
@@ -111,7 +109,7 @@ public class CBCEncryptDecryptRunner {
 
         
         // Decrypt the cipher text and display the original string
-        long start1 = start_timer("decryptCipher");
+        long start1 = start_timer("AES CBC Cavium Decrypt Cipher");
         Cipher decryptCipher = Cipher.getInstance(transformation, "Cavium");
         decryptCipher.init(Cipher.DECRYPT_MODE, key, ivSpec);
         byte[] decryptedText = decryptCipher.doFinal(cipherText);

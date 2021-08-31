@@ -97,10 +97,11 @@ public class LoginRunner {
         //     loginWithExplicitCredentials(user, pass, partition);
         // } else if (method.equals("system-properties")) {
 
-
+        long start = start_timer("Beginning Login with Java Properties");
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         loginUsingJavaProperties("nsnaws", "Firepolo2!", "PARTITION_1");
         // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        end_timer(start);
 
         
 
@@ -152,7 +153,7 @@ public class LoginRunner {
         Key aesKey = null;
 
         try {
-            long start = start_timer("LOGIN PROCESS SymmetricKeys.generateAESKey");
+            long start = start_timer("LOGIN PROCESS Generate AES Key");
             aesKey = SymmetricKeys.generateAESKey(256, "Implicit Java Properties Login Key");
             end_timer(start);
         } catch (Exception e) {
