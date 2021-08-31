@@ -152,7 +152,7 @@ public class LoginRunner {
         Key aesKey = null;
 
         try {
-            long start = start_timer("LOGIN PROCESS SymmetricKeys.generateAESKey")
+            long start = start_timer("LOGIN PROCESS SymmetricKeys.generateAESKey");
             aesKey = SymmetricKeys.generateAESKey(256, "Implicit Java Properties Login Key");
             end_timer(start);
         } catch (Exception e) {
