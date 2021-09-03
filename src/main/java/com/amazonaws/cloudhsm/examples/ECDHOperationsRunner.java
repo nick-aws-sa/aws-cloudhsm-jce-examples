@@ -96,18 +96,18 @@ public class ECDHOperationsRunner {
             keypairBprivatekeysecgen.add(end_timer(start3));
 
             //These byte[] should be identical.
-            System.out.println("Secret X: Length = " + secretXBytes.length +", Base64 = " + Base64.getEncoder().encodeToString(secretXBytes));
-            System.out.println("Secret Y: Length = " + secretYBytes.length +", Base64 = " + Base64.getEncoder().encodeToString(secretYBytes));
+            // System.out.println("Secret X: Length = " + secretXBytes.length +", Base64 = " + Base64.getEncoder().encodeToString(secretXBytes));
+            // System.out.println("Secret Y: Length = " + secretYBytes.length +", Base64 = " + Base64.getEncoder().encodeToString(secretYBytes));
 
             //Each side can now convert this into a secret key.
             SecretKey keyA = new SecretKeySpec(KeyUtil.trimZeroes(secretXBytes), "TlsPremasterSecret");
             SecretKey keyB = new SecretKeySpec(KeyUtil.trimZeroes(secretYBytes), "TlsPremasterSecret");
 
-            if(Arrays.equals(keyA.getEncoded(), keyB.getEncoded())) {
-                System.out.println("Secret Keys are same!");
-            } else {
-                System.out.println("Secret Keys are different!");
-            }
+            // if(Arrays.equals(keyA.getEncoded(), keyB.getEncoded())) {
+            //     System.out.println("Secret Keys are same!");
+            // } else {
+            //     System.out.println("Secret Keys are different!");
+            // }
         }
         output_results(arr_cavium_provider, "CAVIUM PROVIDER CREATION");
         output_results(keypairinhsm, "There is a EC key pair in HSM");
