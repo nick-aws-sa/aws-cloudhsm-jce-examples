@@ -160,5 +160,19 @@ public class ECDHOperationsRunner {
 
         Long max = cur_arr.get(cur_arr.size()-2);
         System.out.println("----------- Max MS:\t" + String.valueOf(max) + " ms");
+
+        
+        System.out.println("------ Array Size:\t" + String.valueOf(cur_arr.size()) + " ms");
+        System.out.println("------ Some random array keys:\t");
+        System.out.println(String.valueOf(cur_arr.get(0)));
+        System.out.println(String.valueOf(cur_arr.get(100)));
+        System.out.println(String.valueOf(cur_arr.get(200)));
+        System.out.println(String.valueOf(cur_arr.get(300)));
+        System.out.println(String.valueOf(cur_arr.get(400)));
+        System.out.println(String.valueOf(cur_arr.get(500)));
+        System.out.println(String.valueOf(cur_arr.get(600)));
+        System.out.println(String.valueOf(cur_arr.get(700)));
+        System.out.println(String.valueOf(cur_arr.get(800)));
+        System.out.println(String.valueOf(cur_arr.get(900)));
     }
 }
