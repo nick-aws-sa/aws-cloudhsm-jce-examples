@@ -33,6 +33,7 @@ import java.lang.String;
 import java.util.*;
 import java.lang.System;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Demonstrate how to generate keys
@@ -153,7 +154,7 @@ public class ECDHOperationsRunner {
         long average = average_arr(cur_arr);
         System.out.println("----------- Average MS:\t" + String.valueOf(average) + " ms");
 
-        cur_arr.sort();
+        Collections.sort(cur_arr);
         long min = cur_arr.get(0);
         System.out.println("----------- Min MS:\t" + String.valueOf(min) + " ms");
 
