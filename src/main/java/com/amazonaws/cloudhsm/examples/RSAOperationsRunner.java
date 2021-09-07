@@ -147,7 +147,7 @@ public class RSAOperationsRunner {
         ArrayList<Long> arr_sign = new ArrayList<>();
         ArrayList<Long> arr_verify = new ArrayList<>();
 
-        for(int x = 0; x < 1000; ++x) {
+        for(int x = 0; x < 10; ++x) {
             try {
                 long start = start_timer("CAVIUM PROVIDER");
                 Security.addProvider(new com.cavium.provider.CaviumProvider());
