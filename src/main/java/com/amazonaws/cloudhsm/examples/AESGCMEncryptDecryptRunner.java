@@ -75,7 +75,7 @@ public class AESGCMEncryptDecryptRunner {
             String aad = "16 bytes of data";
             long start1 = start_timer("Encrypt a plaintext");
             List<byte[]> result = encrypt(key, plainText, aad.getBytes());
-            arr_decrypt.add(end_timer(start1));
+            arr_encrypt.add(end_timer(start1));
 
             // Store the HSM's IV and the ciphertext.
             byte[] iv = result.get(0);
