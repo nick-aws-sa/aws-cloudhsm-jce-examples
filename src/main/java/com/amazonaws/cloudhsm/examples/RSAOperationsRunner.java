@@ -189,7 +189,7 @@ public class RSAOperationsRunner {
                 ;
             }
             arr_verify.add(end_timer(start5));
-            System.out.println("getting here1");
+            System.out.println("getting here: " + String.valueOf(x));
         }
         output_results(arr_cavium_provider, "CAVIUM PROVIDER CREATION");
         output_results(arr_gen_rsa_key_pair, "Gernate RSA Key Pair");
