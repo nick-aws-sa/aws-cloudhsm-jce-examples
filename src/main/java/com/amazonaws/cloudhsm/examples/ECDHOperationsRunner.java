@@ -46,6 +46,7 @@ public class ECDHOperationsRunner {
         ArrayList<Long> sunecprovider = new ArrayList<>();
         ArrayList<Long> keypairAprivatekeysecgen = new ArrayList<>();
         ArrayList<Long> keypairBprivatekeysecgen = new ArrayList<>();
+        ArrayList<Long> arr_gen_secret_keys = new ArrayList<>();
         
 
         for(int x = 0; x < 1000; ++x) {
@@ -64,14 +65,14 @@ public class ECDHOperationsRunner {
             final String CURVE_ID = "secp256r1";
 
             //There is a EC key pair in HSM
-            long start0 = start_timer("There is a EC key pair in HSM");
+            long start0 = start_timer("Generate a EC key pair in HSM");
             KeyPairGenerator keyPairGenA = KeyPairGenerator.getInstance("EC", "Cavium");
             keyPairGenA.initialize(new ECGenParameterSpec(CURVE_ID));
             KeyPair keyPairA = keyPairGenA.generateKeyPair();
             keypairinhsm.add(end_timer(start0));
 
             //There is a EC key pair externally. Lets say with SunEC provider.
-            long start1 = start_timer("There is a EC key pair externally. Lets say with SunEC provider.");
+            long start1 = start_timer("Generate a EC key pair from SunEC provider(external to HSM) - with the same Curve");
             KeyPairGenerator keyPairGenB = KeyPairGenerator.getInstance("EC", "SunEC");
             keyPairGenB.initialize(new ECGenParameterSpec(CURVE_ID)); //We need to use the same Curve on both the sides.
             KeyPair keyPairB = keyPairGenB.generateKeyPair();
@@ -80,7 +81,7 @@ public class ECDHOperationsRunner {
             //Each side computes the shared key using its own private key and public key from the other side
 
             //Use keyPairA's private key and keyPairB's public key to generate a secret. This has to be Cavium provider as keyPairA's private key is in HSM and non-extractable by default.
-            long start2 = start_timer("Use keyPairA's private key and keyPairB's public key to generate a secret. This has to be Cavium provider as keyPairA's private key is in HSM and non-extractable by default.");
+            long start2 = start_timer("Use HSM private key and SunEC public key to generate a secret.");
             KeyAgreement keyAgreementA = KeyAgreement.getInstance("ECDH", "Cavium");
             keyAgreementA.init(keyPairA.getPrivate());
             keyAgreementA.doPhase(keyPairB.getPublic(), true);
@@ -88,7 +89,7 @@ public class ECDHOperationsRunner {
             keypairAprivatekeysecgen.add(end_timer(start2));
 
             //Use keyPairB's private key and keyPairA's public key to generate a secret.
-            long start3 = start_timer("Use keyPairB's private key and keyPairA's public key to generate a secret.");
+            long start3 = start_timer("Use SunEC private key and HSM public key to generate a secret");
             KeyAgreement keyAgreementB = KeyAgreement.getInstance("ECDH", "SunEC");
             keyAgreementB.init(keyPairB.getPrivate());
             keyAgreementB.doPhase(keyPairA.getPublic(), true);
@@ -100,8 +101,10 @@ public class ECDHOperationsRunner {
             // System.out.println("Secret Y: Length = " + secretYBytes.length +", Base64 = " + Base64.getEncoder().encodeToString(secretYBytes));
 
             //Each side can now convert this into a secret key.
+            long start4 = start_timer("After Agreement Secret Generattion, convert bytes to secret key for use");
             SecretKey keyA = new SecretKeySpec(KeyUtil.trimZeroes(secretXBytes), "TlsPremasterSecret");
             SecretKey keyB = new SecretKeySpec(KeyUtil.trimZeroes(secretYBytes), "TlsPremasterSecret");
+            arr_gen_secret_keys.add(end_timer(start4));
 
             // if(Arrays.equals(keyA.getEncoded(), keyB.getEncoded())) {
             //     System.out.println("Secret Keys are same!");
@@ -111,9 +114,10 @@ public class ECDHOperationsRunner {
         }
         output_results(arr_cavium_provider, "CAVIUM PROVIDER CREATION");
         output_results(keypairinhsm, "There is a EC key pair in HSM");
-        output_results(sunecprovider, "There is a EC key pair externally. Lets say with SunEC provider.");
-        output_results(keypairAprivatekeysecgen, "Use keyPairA's private key and keyPairB's public key to generate a secret. This has to be Cavium provider as keyPairA's private key is in HSM and non-extractable by default.");
-        output_results(keypairBprivatekeysecgen, "Use keyPairB's private key and keyPairA's public key to generate a secret.");
+        output_results(sunecprovider, "Generate a EC key pair from SunEC provider(external to HSM) - with the same Curve");
+        output_results(keypairAprivatekeysecgen, "Use HSM private key and SunEC public key to generate a secret.");
+        output_results(keypairBprivatekeysecgen, "Use SunEC private key and HSM public key to generate a secret");
+        output_results(arr_gen_secret_keys, "After Agreement Secret Generattion, convert bytes to secret key for use");
     }
 
 
