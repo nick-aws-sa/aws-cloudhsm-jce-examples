@@ -35,6 +35,9 @@ import javax.crypto.NoSuchPaddingException;
 import java.util.*;
 import java.lang.System;
 import java.lang.String;
+
+import java.util.ArrayList;
+import java.util.Collections;
 /**
  * Demonstrate basic RSA operations.
  */
@@ -137,47 +140,63 @@ public class RSAOperationsRunner {
     }
 
     public static void main(final String[] args) throws Exception {
-        try {
-            long start = start_timer("CAVIUM PROVIDER");
-            Security.addProvider(new com.cavium.provider.CaviumProvider());
-            end_timer(start);
-        } catch (IOException ex) {
-            System.out.println(ex);
-            return;
+        ArrayList<Long> arr_cavium_provider = new ArrayList<>();
+        ArrayList<Long> arr_gen_rsa_key_pair = new ArrayList<>();
+        ArrayList<Long> arr_RSA_Encryption = new ArrayList<>();
+        ArrayList<Long> arr_RSA_Decryption = new ArrayList<>();
+        ArrayList<Long> arr_sign = new ArrayList<>();
+        ArrayList<Long> arr_verify = new ArrayList<>();
+
+        for(int x = 0; x < 1000; ++x) {
+            try {
+                long start = start_timer("CAVIUM PROVIDER");
+                Security.addProvider(new com.cavium.provider.CaviumProvider());
+                arr_cavium_provider.add(end_timer(start));
+            } catch (IOException ex) {
+                System.out.println(ex);
+                return;
+            }
+
+            String plainText = "This is a sample Plain Text Message!";
+            String transformation = "RSA/ECB/OAEPPadding";
+
+            long start1 = start_timer("Gernate RSA Key Pair");
+            KeyPair kp = new AsymmetricKeys().generateRSAKeyPair(2048, "rsa test");
+            arr_gen_rsa_key_pair.add(end_timer(start1));
+
+            long start2 = start_timer("Performing RSA Encryption Operation");
+            byte[] cipherText = null;
+            cipherText = encrypt(transformation, kp.getPublic(), plainText.getBytes("UTF-8"));
+            arr_RSA_Encryption.add(end_timer(start2));
+
+            // System.out.println("Encrypted plaintext = " + Base64.getEncoder().encodeToString(cipherText));
+
+            long start3 = start_timer("Performing RSA Decryption Operation");
+            byte[] decryptedText = decrypt(transformation, kp.getPrivate(), cipherText);
+            arr_RSA_Decryption.add(end_timer(start3));
+            // System.out.println("Decrypted text = " + new String(decryptedText, "UTF-8"));
+
+            String signingAlgorithm = "SHA512withRSA/PSS";
+            long start4 = start_timer("Sign a message using the passed signing algorithm. SHA512withRSA/PSS");
+            byte[] signature = sign(plainText.getBytes("UTF-8"), kp.getPrivate(), signingAlgorithm);
+            // System.out.println("Plaintext signature = " + Base64.getEncoder().encodeToString(signature));
+            arr_sign.add(end_timer(start4));
+
+            long start5 = start_timer("Verify RSA Signature");
+            if (verify(plainText.getBytes("UTF-8"), signature, kp.getPublic(), signingAlgorithm)) {
+                System.out.println("Signature verified");
+            } else {
+                System.out.println("Signature is invalid!");
+            }
+            arr_verify.add(end_timer(start5));
         }
+        output_results(arr_cavium_provider, "CAVIUM PROVIDER CREATION");
+        output_results(arr_gen_rsa_key_pair, "Gernate RSA Key Pair");
+        output_results(arr_RSA_Encryption, "Performing RSA Encryption Operation");
+        output_results(arr_RSA_Decryption, "Performing RSA Decryption Operation");
+        output_results(arr_sign, "Sign a message using the passed signing algorithm. SHA512withRSA/PSS");
+        output_results(arr_verify, "Verify RSA Signature");
 
-        String plainText = "This is a sample Plain Text Message!";
-        String transformation = "RSA/ECB/OAEPPadding";
-
-        long start1 = start_timer("Gernate RSA Key Pair");
-        KeyPair kp = new AsymmetricKeys().generateRSAKeyPair(2048, "rsa test");
-        end_timer(start1);
-
-        long start2 = start_timer("Performing RSA Encryption Operation");
-        byte[] cipherText = null;
-        cipherText = encrypt(transformation, kp.getPublic(), plainText.getBytes("UTF-8"));
-        end_timer(start2);
-
-        // System.out.println("Encrypted plaintext = " + Base64.getEncoder().encodeToString(cipherText));
-
-        long start3 = start_timer("Performing RSA Decryption Operation");
-        byte[] decryptedText = decrypt(transformation, kp.getPrivate(), cipherText);
-        end_timer(start3);
-        // System.out.println("Decrypted text = " + new String(decryptedText, "UTF-8"));
-
-        String signingAlgorithm = "SHA512withRSA/PSS";
-        long start4 = start_timer("Sign a message using the passed signing algorithm. SHA512withRSA/PSS");
-        byte[] signature = sign(plainText.getBytes("UTF-8"), kp.getPrivate(), signingAlgorithm);
-        // System.out.println("Plaintext signature = " + Base64.getEncoder().encodeToString(signature));
-        end_timer(start4);
-
-        long start5 = start_timer("Verify RSA Signature");
-        if (verify(plainText.getBytes("UTF-8"), signature, kp.getPublic(), signingAlgorithm)) {
-            System.out.println("Signature verified");
-        } else {
-            System.out.println("Signature is invalid!");
-        }
-        end_timer(start5);
     }
 
     // --------------------------------------------------------------------------------------------------------
@@ -185,16 +204,47 @@ public class RSAOperationsRunner {
     // Nick's Output
 
     private static long start_timer(String operation) {
-        System.out.println("---------------- Operation:\t" + operation);
+        // System.out.println("---------------- Operation:\t" + operation);
         long start = System.currentTimeMillis();
-        System.out.println("-------------------- Start At:\t" + String.valueOf(start) + " ms");
+        // System.out.println("-------------------- Start At:\t" + String.valueOf(start) + " ms");
         return start;
     }
 
-    private static void end_timer(long start) {
+    private static long end_timer(long start) {
         long end = System.currentTimeMillis();
-        System.out.println("-------------------- End At:\t" + String.valueOf(end) + " ms");
+        // System.out.println("-------------------- End At:\t" + String.valueOf(end) + " ms");
         long totaltime = end - start;
-        System.out.println("-------------------- TOTAL TIME:\t" + String.valueOf(totaltime) + " ms\n\n");
+        // System.out.println("-------------------- TOTAL TIME:\t" + String.valueOf(totaltime) + " ms\n\n");
+        return totaltime;
+    }
+
+    private static long average_arr(ArrayList<Long> cur) {
+
+        long total = 0;
+        for(int x = 0; x < cur.size(); ++x) {
+            total = total + cur.get(x);
+        }
+
+        long average = total / cur.size();
+
+        return average;
+    }
+
+    private static void output_results(ArrayList<Long> cur_arr, String description) {
+        System.out.println("---------------- Operation:\t" + description);
+
+        long average = average_arr(cur_arr);
+        System.out.println("----------- Average MS:\t" + String.valueOf(average) + " ms");
+
+        Collections.sort(cur_arr);
+        long min = cur_arr.get(0);
+        System.out.println("----------- Min MS:\t" + String.valueOf(min) + " ms");
+
+        Long max = cur_arr.get(cur_arr.size()-2);
+        System.out.println("----------- Max MS:\t" + String.valueOf(max) + " ms");
+
+        
+        System.out.println("------ Array Size:\t" + String.valueOf(cur_arr.size()));
     }
 }
+
