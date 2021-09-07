@@ -145,7 +145,7 @@ public class RSAOperationsRunner {
         ArrayList<Long> arr_RSA_Encryption = new ArrayList<>();
         ArrayList<Long> arr_RSA_Decryption = new ArrayList<>();
         ArrayList<Long> arr_sign = new ArrayList<>();
-        // ArrayList<Long> arr_verify = new ArrayList<>();
+        ArrayList<Long> arr_verify = new ArrayList<>();
 
         for(int x = 0; x < 1000; ++x) {
             try {
@@ -182,21 +182,20 @@ public class RSAOperationsRunner {
             // System.out.println("Plaintext signature = " + Base64.getEncoder().encodeToString(signature));
             arr_sign.add(end_timer(start4));
 
-            // long start5 = start_timer("Verify RSA Signature");
-            // if (verify(plainText.getBytes("UTF-8"), signature, kp.getPublic(), signingAlgorithm)) {
-            //     System.out.println("Signature verified");
-            // } else {
-            //     System.out.println("Signature is invalid!");
-            // }
-            // arr_verify.add(end_timer(start5));
+            long start5 = start_timer("Verify RSA Signature");
+            if (verify(plainText.getBytes("UTF-8"), signature, kp.getPublic(), signingAlgorithm)) {
+                ;
+            } else {
+                ;
+            }
+            arr_verify.add(end_timer(start5));
         }
         output_results(arr_cavium_provider, "CAVIUM PROVIDER CREATION");
         output_results(arr_gen_rsa_key_pair, "Gernate RSA Key Pair");
         output_results(arr_RSA_Encryption, "Performing RSA Encryption Operation");
         output_results(arr_RSA_Decryption, "Performing RSA Decryption Operation");
         output_results(arr_sign, "Sign a message using the passed signing algorithm. SHA512withRSA/PSS");
-        // output_results(arr_verify, "Verify RSA Signature");
-
+        output_results(arr_verify, "Verify RSA Signature");
     }
 
     // --------------------------------------------------------------------------------------------------------
