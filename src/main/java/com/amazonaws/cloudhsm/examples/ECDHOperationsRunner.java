@@ -113,7 +113,7 @@ public class ECDHOperationsRunner {
             // }
         }
         output_results(arr_cavium_provider, "CAVIUM PROVIDER CREATION");
-        output_results(keypairinhsm, "There is a EC key pair in HSM");
+        output_results(keypairinhsm, "Generate a EC key pair in HSM");
         output_results(sunecprovider, "Generate a EC key pair from SunEC provider(external to HSM) - with the same Curve");
         output_results(keypairAprivatekeysecgen, "Use HSM private key and SunEC public key to generate a secret.");
         output_results(keypairBprivatekeysecgen, "Use SunEC private key and HSM public key to generate a secret");
